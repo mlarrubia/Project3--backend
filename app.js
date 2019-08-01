@@ -8,14 +8,20 @@ const hbs          = require('hbs');
 const mongoose     = require('mongoose');
 const logger       = require('morgan');
 const path         = require('path');
+const cors         = require('cors');
+const passport     = require('passport');
+const session      = require('express-session');
 
 
+require('./config/passport-stuff');
+
+
+mongoose.Promise = Promise;
 mongoose
-  .connect('mongodb://localhost/backend', {useNewUrlParser: true})
-  .then(x => {
-    console.log(`Connected to Mongo! Database name: "${x.connections[0].name}"`)
-  })
-  .catch(err => {
+  .connect('mongodb://localhost/backend', {useMongoClient: true})
+  .then(() => {
+    console.log('Connected to Mongo!')
+  }).catch(err => {
     console.error('Error connecting to mongo', err)
   });
 
@@ -51,8 +57,26 @@ app.locals.title = 'Express - Generated with IronGenerator';
 
 
 
-const index = require('./routes/index');
-app.use('/', index);
+app.use(session({
+  secret:"some secret goes here",
+  resave: true,
+  saveUninitialized: true
+}));
+
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+
+
+app.use(cors({
+  credentials: true,
+  origin: ['http://localhost:3000', 'https://blah.herokuapp.com']
+}));
+
+
+const userRoutes = require('./routes/userRoutes');
+app.use('/api/auth', userRoutes);
 
 
 module.exports = app;
