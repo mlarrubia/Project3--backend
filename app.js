@@ -79,4 +79,12 @@ const userRoutes = require('./routes/userRoutes');
 app.use('/api/auth', userRoutes);
 
 
+const celebrityRoutes = require('./routes/celebrityRoutes');
+app.use('/api/celebrity', celebrityRoutes);
+
+
+
+
+
+
 module.exports = app;

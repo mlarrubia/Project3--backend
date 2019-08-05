@@ -10,7 +10,6 @@ const passport    = require('passport');
 router.post('/signup', (req, res, next) => {
     const userNameVar = req.body.username;
     const password = req.body.password;
-    const type = req.body.type;
   
     if (!userNameVar || !password) {
       res.status(400).json({ message: 'Provide username and password' });
@@ -41,7 +40,7 @@ router.post('/signup', (req, res, next) => {
         const aNewUser = new User({
             username: userNameVar,
             password: hashPass,
-            type: type === "admin" ? "admin" : "user",
+            type: username === "admin" ? "admin" : "user",
         });
   
         aNewUser.save(err => {

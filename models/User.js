@@ -6,6 +6,8 @@ const userSchema = new Schema({
     username: String,
     password: String,
     type: String,
+    // celebrities: [{type: Schema.Types.ObjectId, ref: "Celebrity"}],
+
   //   image: 
 });
 
